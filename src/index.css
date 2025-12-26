@@ -9,3 +9,181 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+/* Fallback for html2canvas which doesn't support oklch/oklab (Tailwind 4 default) */
+.is-generating-pdf,
+.is-generating-pdf * {
+  /* Reset problematic Tailwind 4 variables */
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+  --tw-ring-color: rgba(0, 0, 0, 0) !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-inset-shadow: 0 0 #0000 !important;
+  --tw-inset-ring-shadow: 0 0 #0000 !important;
+  --tw-outline-color: transparent !important;
+
+  /* Disable transitions which can capture mid-frame colors */
+  transition: none !important;
+  animation: none !important;
+
+  /* Force most common colors to RGB/Hex */
+  background-color: inherit;
+  color: inherit;
+  border-color: inherit;
+}
+
+.is-generating-pdf .bg-slate-100 {
+  background-color: #f1f5f9 !important;
+}
+
+.is-generating-pdf .bg-slate-50 {
+  background-color: #f8fafc !important;
+}
+
+.is-generating-pdf .bg-white {
+  background-color: #ffffff !important;
+}
+
+.is-generating-pdf .bg-slate-900 {
+  background-color: #0f172a !important;
+}
+
+.is-generating-pdf .bg-blue-600 {
+  background-color: #2563eb !important;
+}
+
+.is-generating-pdf .bg-blue-50 {
+  background-color: #eff6ff !important;
+}
+
+.is-generating-pdf .bg-emerald-50 {
+  background-color: #ecfdf5 !important;
+}
+
+.is-generating-pdf .text-slate-800 {
+  color: #1e293b !important;
+}
+
+.is-generating-pdf .text-slate-700 {
+  color: #334155 !important;
+}
+
+.is-generating-pdf .text-slate-600 {
+  color: #475569 !important;
+}
+
+.is-generating-pdf .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+.is-generating-pdf .text-blue-600 {
+  color: #2563eb !important;
+}
+
+.is-generating-pdf .text-emerald-600 {
+  color: #059669 !important;
+}
+
+.is-generating-pdf .text-white {
+  color: #ffffff !important;
+}
+
+.is-generating-pdf .border-slate-100 {
+  border-color: #f1f5f9 !important;
+}
+
+.is-generating-pdf .border-slate-200 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Professional PDF Template Styles */
+.pdf-container {
+  width: 210mm;
+  /* A4 Width */
+  padding: 20mm;
+  background: white;
+  color: #1e293b;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+.pdf-header {
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.pdf-section-title {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+
+.pdf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.pdf-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.pdf-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.pdf-table th {
+  background: #f8fafc;
+  padding: 10px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.pdf-table td {
+  padding: 10px;
+  font-size: 11px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pdf-total-row {
+  background: #f1f5f9;
+  font-weight: 800;
+}
+
+.pdf-footer {
+  margin-top: 50px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 20px;
+}
+
+.pdf-signature-box {
+  border-top: 1px solid #94a3b8;
+  width: 150px;
+  text-align: center;
+  padding-top: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+}
