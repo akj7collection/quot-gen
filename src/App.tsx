@@ -1,9 +1,8 @@
-import React, { useState, type ChangeEvent } from 'react';
+import React, { useState, type ChangeEvent, useEffect } from 'react';
 import jkmLogo from './assets/JKM_2.png';
 import {
   Plus,
   Calculator,
-  User,
   Car,
   ShieldCheck,
   Trash2,
@@ -14,6 +13,10 @@ import {
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import AuthScreen from './AuthScreen';
+import { LogOut } from 'lucide-react';
+import { supabase } from './supabaseClient';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 // --- Interfaces for TypeScript ---
 interface ServiceRow {
@@ -246,11 +249,40 @@ const App: React.FC = () => {
 
   const [totals, setTotals] = useState<Totals>({ spares: 0, labor: 0, grand: 0 });
   const [isTableOpen, setIsTableOpen] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
 
   const pdfRef = React.useRef<HTMLDivElement>(null);
 
+  // --- Auth Effect ---
+  useEffect(() => {
+    // Check initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsAuthenticated(!!session);
+    });
+
+    // Listen for changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setIsAuthenticated(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
 
   // --- Handlers ---
+  const handleLogin = (email: string) => {
+    // Supabase handles the session via onAuthStateChange
+    // but we can add secondary logic here if needed.
+    console.log(`Logged in as: ${email}`);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   const handleDownloadPDF = async () => {
     if (!pdfRef.current) return;
 
@@ -441,6 +473,10 @@ const App: React.FC = () => {
     });
   };
 
+  if (!isAuthenticated) {
+    return <AuthScreen onLogin={handleLogin} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 p-4 md:p-8 font-sans text-slate-800 selection:bg-blue-100 selection:text-blue-700">
 
@@ -475,14 +511,18 @@ const App: React.FC = () => {
 
           <div className="flex items-center gap-6">
             <div className="hidden md:flex flex-col text-right">
-              <span className="text-3xs font-bold text-slate-700">Jeyakumar T</span>
-              <span className="text-[15px] text-slate-400 font-mono tracking-tight">Proprietor & Service Head</span>
+              <span className="text-3xs font-bold text-slate-700">
+                {user?.user_metadata?.full_name || user?.email || 'Service Head'}
+              </span>
+              <span className="text-[15px] text-slate-400 font-mono tracking-tight uppercase">Proprietor</span>
             </div>
             <button
-              className="p-2.5 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors text-slate-600 border border-slate-200"
+              onClick={handleLogout}
+              className="p-2.5 bg-red-50 rounded-full hover:bg-red-100 transition-colors text-red-600 border border-red-100 flex items-center gap-2 group/logout pr-4"
               data-pdf-ignore
             >
-              <User size={18} />
+              <div className="p-1.5 bg-white rounded-full"><LogOut size={16} /></div>
+              <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Sign Out</span>
             </button>
           </div>
         </header>
