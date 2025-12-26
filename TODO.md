@@ -1,4 +1,4 @@
-🏎️ JK Motors: Advanced Quotation Engine & Workshop ERP
+🏎️ JK Motors: Advancement of Quotation Generation PRP
 
 A professional-grade automotive workshop management system built with React, Vite, and Supabase. Designed for high-speed estimation and secure document lifecycle management.
 
